@@ -4,10 +4,24 @@ export function createPreviousListCountry(cardInfo) {
     return cardInfo
         .map(
             ({ name: { official }, flags: { svg } }) => `
-        <li class="country-info__img">
-        <img src="${svg}" alt="${official}" width="20" height="20">           
-            <p>${official}</p>
-        </li>`
+<div class="photo-card">
+  <img src="" alt="" loading="lazy" />
+  <div class="info">
+    <p class="info-item">
+      <b>Likes</b>
+    </p>
+    <p class="info-item">
+      <b>Views</b>
+    </p>
+    <p class="info-item">
+      <b>Comments</b>
+    </p>
+    <p class="info-item">
+      <b>Downloads</b>
+    </p>
+  </div>
+</div>
+        `
         )
         .join('')
 }
