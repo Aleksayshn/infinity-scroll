@@ -46,6 +46,7 @@ function onSearchFormSubmit(e) {
             if (data.totalHits > pixabayAPI.per_page) {
                 loadMoreBtnEl.classList.remove('is-hidden');
             }
+
             Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
             galleryListEl.innerHTML = createMarkUpGallery(data.hits);
             lightbox.refresh();
