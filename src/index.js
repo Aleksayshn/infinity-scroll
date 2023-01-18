@@ -50,14 +50,6 @@ function onSearchFormSubmit(e) {
             Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
             galleryListEl.innerHTML = createMarkUpGallery(data.hits);
             lightbox.refresh();
-            const { height: cardHeight } = document
-                .querySelector('.gallery')
-                .firstElementChild.getBoundingClientRect();
-
-            window.scrollBy({
-                top: cardHeight * 2,
-                behavior: 'smooth',
-            });
 
         }
         )
