@@ -26,80 +26,68 @@ const pixabayAPI = new PixabayAPI();
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
 
-function onSearchFormSubmit(e) {
+async function onSearchFormSubmit(e) {
     e.preventDefault();
     loadMoreBtnEl.classList.add('is-hidden');
     searchBtnEl.disabled = true;
     pixabayAPI.query = e.target.elements.searchQuery.value.trim().toLowerCase();
     pixabayAPI.page = 1;
 
-    pixabayAPI
-        .fetchImagePixabay()
-        .then(data => {
-            if (data.hits.length === 0) {
-                Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-                e.target.reset();
-                galleryListEl.innerHTML = '';
-                return;
-            }
-
-            if (data.totalHits > pixabayAPI.per_page) {
-                loadMoreBtnEl.classList.remove('is-hidden');
-            }
-
-            Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-            galleryListEl.innerHTML = createMarkUpGallery(data.hits);
-            lightbox.refresh();
-
+    try {
+        const dataFromFetch = await pixabayAPI.fetchImagePixabay();
+        if (dataFromFetch.hits.length === 0) {
+            Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            e.target.reset();
+            galleryListEl.innerHTML = '';
+            return;
         }
-        )
-        .catch(err => {
-            switch (err.message) {
-                case '404': {
-                    console.log(err);
-                    break;
-                }
-            }
-        })
-        .finally(() => {
-            searchBtnEl.disabled = false;
-        });
+
+        if (dataFromFetch.totalHits > pixabayAPI.per_page) {
+            loadMoreBtnEl.classList.remove('is-hidden');
+        }
+
+        Notiflix.Notify.success(`Hooray! We found ${dataFromFetch.totalHits} images.`);
+        galleryListEl.innerHTML = createMarkUpGallery(dataFromFetch.hits);
+        lightbox.refresh();
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        searchBtnEl.disabled = false;
+    };
 }
 
-
-function onLoadMoreBtnClick(e) {
+async function onLoadMoreBtnClick(e) {
     e.target.disabled = true;
     pixabayAPI.page += 1;
 
-    pixabayAPI.fetchImagePixabay()
-        .then(data => {
-            galleryListEl.insertAdjacentHTML('beforeend', createMarkUpGallery(data.hits));
-            lightbox.refresh();
-            const { height: cardHeight } = document
-                .querySelector('.gallery')
-                .firstElementChild.getBoundingClientRect();
+    try {
+        const loadMoreData = await pixabayAPI.fetchImagePixabay();
+        galleryListEl.insertAdjacentHTML('beforeend', createMarkUpGallery(loadMoreData.hits));
+        lightbox.refresh();
+        const { height: cardHeight } = document
+            .querySelector('.gallery')
+            .firstElementChild.getBoundingClientRect();
 
-            window.scrollBy({
-                top: cardHeight * 2,
-                behavior: 'smooth',
-            });
+        window.scrollBy({
+            top: cardHeight * 2,
+            behavior: 'smooth',
+        });
 
-            if (data.totalHits < pixabayAPI.per_page * pixabayAPI.page) {
-                loadMoreBtnEl.classList.add('is-hidden');
-                Notiflix.Notify.info(
-                    "We're sorry, but you've reached the end of search results."
-                );
-            }
-        })
-        .catch(
-            err => {
-                console.log(err);
-            }
-        )
-        .finally(
-            () => {
-                e.target.disabled = false;
-            });
+        if (loadMoreData.hits.length === 0) {
+            loadMoreBtnEl.classList.add('is-hidden');
+            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+        }
+    }
+
+    catch (error) {
+        console.log(error);
+    }
+
+    finally {
+        e.target.disabled = false;
+
+    }
+
 }
-
-
