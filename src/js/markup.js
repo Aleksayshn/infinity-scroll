@@ -36,6 +36,7 @@ export function createMarkUpGallery(cardsImage) {
       }
     )
     .join('')
+
 };
 
 
