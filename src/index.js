@@ -18,17 +18,21 @@ const refs = {
     galleryListEl: document.querySelector('.js-gallery'),
     loadMoreBtnEl: document.querySelector('.js-load-more'),
     searchBtnEl: document.querySelector('.js-search-btn'),
+    endCollectionText: document.querySelector(".end-collection-text"),
 }
 
-const { searchFormEl, galleryListEl, loadMoreBtnEl, searchBtnEl } = refs;
+const { searchFormEl, galleryListEl, loadMoreBtnEl, searchBtnEl, endCollectionText } = refs;
 const pixabayAPI = new PixabayAPI();
 
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
 
+
+
 async function onSearchFormSubmit(e) {
     e.preventDefault();
     loadMoreBtnEl.classList.add('is-hidden');
+    endCollectionText.classList.add("is-hidden");
     searchBtnEl.disabled = true;
     pixabayAPI.query = e.target.elements.searchQuery.value.trim().toLowerCase();
     pixabayAPI.page = 1;
@@ -75,9 +79,10 @@ async function onLoadMoreBtnClick(e) {
             behavior: 'smooth',
         });
 
-        if (loadMoreData.hits.length === 0) {
+        if (loadMoreData.totalHits < pixabayAPI.per_page * pixabayAPI.page) {
             loadMoreBtnEl.classList.add('is-hidden');
-            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+            endCollectionText.classList.remove("is-hidden");
+            console.log(endCollectionText);
         }
     }
 

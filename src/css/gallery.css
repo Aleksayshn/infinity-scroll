@@ -39,6 +39,9 @@
     display: none;
 }
 
+
+
+
 .search-btn:hover,
 .search-btn:focus,
 .load-more:hover,
@@ -50,7 +53,7 @@
 
 .gallery__image {
     display: block;
-    height: 80%;
+    height: 75%;
 }
 
 .gallery__image img {
@@ -89,4 +92,14 @@ p {
     margin-left: 15px;
     margin-top: 15px;
     box-shadow: 5px 5px 10px rgba(138, 134, 134, 0.8);
+}
+
+.end-collection-text {
+    text-align: center;
+    color: red;
+    font-size: 1.2rem;
+}
+
+.end-collection-text.is-hidden {
+    display: none;
 }
