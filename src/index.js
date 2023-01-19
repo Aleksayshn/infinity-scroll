@@ -31,16 +31,13 @@ async function onSearchFormSubmit(e) {
     e.preventDefault();
     loadMoreBtnEl.classList.add('is-hidden');
     endCollectionText.classList.add("is-hidden");
-    searchBtnEl.disabled = true;
     pixabayAPI.query = e.target.elements.searchQuery.value.trim().toLowerCase();
     pixabayAPI.page = 1;
 
     if (pixabayAPI.query === '') {
-        console.log(pixabayAPI.query);
-
+        galleryListEl.innerHTML = '';
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         e.target.reset();
-        galleryListEl.innerHTML = '';
         return;
     }
 
