@@ -42,19 +42,19 @@ async function onSearchFormSubmit(e) {
     }
 
     try {
-        const dataFromFetch = await pixabayAPI.fetchImagePixabay();
-        if (dataFromFetch.hits.length === 0) {
+        const { data } = await pixabayAPI.fetchImagePixabay();
+        if (data.hits.length === 0) {
             Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
             e.target.reset();
             galleryListEl.innerHTML = '';
             return;
         }
-
-        Notiflix.Notify.success(`Hooray! We found ${dataFromFetch.totalHits} images.`);
-        galleryListEl.innerHTML = createMarkUpGallery(dataFromFetch.hits);
+        console.log(data);
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        galleryListEl.innerHTML = createMarkUpGallery(data.hits);
         lightbox.refresh();
 
-        if (dataFromFetch.totalHits > pixabayAPI.per_page) {
+        if (data.totalHits > pixabayAPI.per_page) {
             loadMoreBtnEl.classList.remove('is-hidden');
             return
         }
@@ -74,9 +74,11 @@ async function onLoadMoreBtnClick(e) {
     pixabayAPI.page += 1;
 
     try {
-        const loadMoreData = await pixabayAPI.fetchImagePixabay();
-        galleryListEl.insertAdjacentHTML('beforeend', createMarkUpGallery(loadMoreData.hits));
+        const { data } = await pixabayAPI.fetchImagePixabay();
+        console.log(data);
+        galleryListEl.insertAdjacentHTML('beforeend', createMarkUpGallery(data.hits));
         lightbox.refresh();
+
         const { height: cardHeight } = document
             .querySelector('.gallery')
             .firstElementChild.getBoundingClientRect();
@@ -86,11 +88,10 @@ async function onLoadMoreBtnClick(e) {
             behavior: 'smooth',
         });
 
-        if (loadMoreData.totalHits < pixabayAPI.per_page * pixabayAPI.page) {
+        if (data.totalHits < pixabayAPI.per_page * pixabayAPI.page) {
             loadMoreBtnEl.classList.add('is-hidden');
             endCollectionText.classList.remove("is-hidden");
         }
-
     }
 
     catch (error) {
@@ -99,7 +100,6 @@ async function onLoadMoreBtnClick(e) {
 
     finally {
         e.target.disabled = false;
-
     }
 
 }

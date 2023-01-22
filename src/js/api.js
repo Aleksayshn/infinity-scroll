@@ -25,7 +25,6 @@ export class PixabayAPI {
             }
         };
 
-        const { data } = await axios.get(`${PixabayAPI.BASE_URL}`, searchParams);
-        return data;
+        return await axios.get(`${PixabayAPI.BASE_URL}`, searchParams);
     }
 }
