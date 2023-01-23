@@ -75,7 +75,6 @@ async function onLoadMoreBtnClick(e) {
 
     try {
         const { data } = await pixabayAPI.fetchImagePixabay();
-        console.log(data);
         galleryListEl.insertAdjacentHTML('beforeend', createMarkUpGallery(data.hits));
         lightbox.refresh();
 
