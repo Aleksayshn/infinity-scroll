@@ -2,8 +2,8 @@
 
 import { lightbox } from "../index";
 import { galleryListEl } from "../index";
-import { pixabayAPI } from "../index";
-import { createMarkUpGallery } from './markup';
+// import { pixabayAPI, targetScrollEl, endCollectionText} from "../index";
+import { createMarkUpGallery, } from './markup';
 
 
 export const observer = new IntersectionObserver((entries) => {
