@@ -22,7 +22,7 @@ const refs = {
     targetScrollEl: document.querySelector(".target-element")
 }
 
-const { searchFormEl, galleryListEl, searchBtnEl, targetScrollEl, endCollectionText } = refs;
+export const { searchFormEl, galleryListEl, searchBtnEl, targetScrollEl, endCollectionText } = refs;
 export const pixabayAPI = new PixabayAPI();
 
 searchFormEl.addEventListener('submit', onSearchFormSubmit);

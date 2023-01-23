@@ -2,7 +2,7 @@
 
 import { lightbox } from "../index";
 import { galleryListEl } from "../index";
-// import { pixabayAPI, targetScrollEl, endCollectionText} from "../index";
+import { pixabayAPI, targetScrollEl, endCollectionText } from "../index";
 import { createMarkUpGallery, } from './markup';
 
 
