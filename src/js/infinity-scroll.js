@@ -3,7 +3,8 @@
 import { lightbox } from "../index";
 import { galleryListEl } from "../index";
 import { pixabayAPI } from "../index";
-import { createMarkUpGallery, targetScrollEl, endCollectionText } from './markup';
+import { createMarkUpGallery } from './markup';
+
 
 export const observer = new IntersectionObserver((entries) => {
     if (!entries[0].isIntersecting) {
